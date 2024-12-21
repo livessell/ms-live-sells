@@ -1,28 +1,25 @@
 package repositories
 
 import (
-	"gorm.io/gorm"
 	"ms-live-sells/database"
 	"ms-live-sells/models"
 	"time"
 )
 
-type OrderRepository struct {
-	db *gorm.DB
-}
+type OrderRepository struct{}
 
 // NewOrderRepository cria uma nova instância do OrderRepository
-func NewOrderRepository() *OrderRepository {
-	return &OrderRepository{db: database.DB}
-}
+//func NewOrderRepository() *OrderRepository {
+//	return &OrderRepository{db: database.DB}
+//}
 
 // Create cria uma nova ordem no banco de dados
-func (r *OrderRepository) Create(username string, product *models.Product) error {
+func (r *OrderRepository) Create(user *models.User, product *models.Product, customer *models.Customer) error {
 	order := models.Order{
-		Username:    username,
-		ProductID:   product.ID,
-		ProductName: product.Name,
-		CreatedAt:   time.Now(),
+		UserID:     user.ID,
+		ProductID:  product.ID,
+		CustomerID: customer.ID,
+		CreatedAt:  time.Now(),
 	}
-	return r.db.Create(&order).Error
+	return database.DB.Create(&order).Error
 }

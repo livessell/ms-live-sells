@@ -27,8 +27,8 @@ func ConnectDatabase() {
 	dbName := os.Getenv("DB_NAME")
 
 	appEnv := os.Getenv("APP_ENV")
-	if appEnv == "test" {
-		DB, err = gorm.Open(postgres.Open("host=localhost user=postgres password=test dbname=test_db sslmode=disable"), &gorm.Config{})
+	if appEnv == "development" {
+		DB, err = gorm.Open(postgres.Open("host=kesavan.db.elephantsql.com user=cfububgl password=hRL8JvCQoQ6Le6HDYGrc88jrOkGG00YY dbname=cfububgl sslmode=disable"), &gorm.Config{})
 		if err != nil {
 			panic("Falha ao conectar ao banco de testes!")
 		}

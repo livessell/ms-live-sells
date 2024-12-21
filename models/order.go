@@ -7,18 +7,17 @@ import (
 )
 
 type Order struct {
-	ID          uuid.UUID `gorm:"type:uuid;primaryKey"`
-	ProductID   uuid.UUID `gorm:"foreignKey:OrderID"`
-	Message     string    `gorm:"type:text;null"`
-	Username    string    `gorm:"type:text;null;index"`
-	ProductName string    `gorm:"type:text;null"`
-	CreatedAt   time.Time
+	ID         uuid.UUID `gorm:"type:uuid;primaryKey"`
+	ProductID  uuid.UUID `gorm:"type:uuid;not null;index"`
+	UserID     uuid.UUID `gorm:"type:uuid;not null;index"`
+	CustomerID uuid.UUID `gorm:"type:uuid;not null;index"`
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
-func NewOrder(productID uuid.UUID, message string) *Order {
+func NewOrder(productID uuid.UUID) *Order {
 	return &Order{
 		ProductID: productID,
-		Message:   message,
 	}
 }
 

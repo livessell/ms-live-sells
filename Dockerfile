@@ -13,6 +13,9 @@ RUN go mod download
 # Copy the source code into the container
 COPY . ./
 
+# Copy the .env file into the container
+COPY .env .env
+
 # Compile the Go binary with CGO enabled
 RUN CGO_ENABLED=1 GOOS=linux go build -o main
 
