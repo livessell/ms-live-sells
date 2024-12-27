@@ -105,7 +105,6 @@ func (p *InstagramProvider) GetUserByUsername(username string) (*models.UserInfo
 // GetLiveMedia retrieves the live video IG Media for an IG User.
 func (ip *InstagramProvider) GetLiveMedia(socialNetworkID string) ([]models.InstagramMedias, error) {
 	apiURL := fmt.Sprintf("%s/%s/live_media?fields=id,media_type,media_product_type,owner,username,comments&access_token=%s", baseURL, socialNetworkID, ip.AccessToken)
-	fmt.Printf("TOKEN: %s\n", ip.AccessToken)
 	// Realiza a requisição para o endpoint
 	resp, err := http.Get(apiURL)
 	if err != nil {
