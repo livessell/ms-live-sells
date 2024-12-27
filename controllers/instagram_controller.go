@@ -28,7 +28,7 @@ func (ctrl *InstagramController) StartMonitoring(c echo.Context) error {
 
 	// Start monitoring
 	go func() {
-		err := ctrl.InstagramService.StartInstagramMonitoring(req.UserID)
+		err := ctrl.InstagramService.StartInstagramMonitoring(req.UserID, req.LiveID)
 		if err != nil {
 			log.Printf("Error starting monitoring for user %s: %v", req.UserID, err)
 		}

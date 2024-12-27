@@ -15,6 +15,7 @@ import (
 type InstagramService struct {
 	Provider *provider.InstagramProvider
 	UserRepo *repositories.UserRepository
+	LiveRepo *repositories.LiveRepository
 
 	SocialService *social.SocialService
 }
@@ -40,7 +41,7 @@ func (i *InstagramService) GetMediaComments(mediaID string) (*models.InstagramCo
 }
 
 // StartInstagramMonitoring begins the monitoring process for the instagram user by his ID
-func (i *InstagramService) StartInstagramMonitoring(userID uuid.UUID) error {
+func (i *InstagramService) StartInstagramMonitoring(userID, liveID uuid.UUID) error {
 	// Retrieve the user from the repository
 	user, err := i.UserRepo.GetUsersWithInstagramByID(userID)
 	if err != nil {
@@ -58,6 +59,13 @@ func (i *InstagramService) StartInstagramMonitoring(userID uuid.UUID) error {
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return err
+	}
+
+	// Fetch live for the user
+	live, err := i.LiveRepo.FindByID(liveID) //Change the ID
+	if err != nil {
+		fmt.Printf("Error fetching live: %v\n", err)
+		return nil
 	}
 
 	//socialNetworkID := "17841401499820518"
@@ -78,7 +86,18 @@ func (i *InstagramService) StartInstagramMonitoring(userID uuid.UUID) error {
 			// Check if the live is still active
 			if len(liveMedia) == 0 {
 				fmt.Printf("Live ended for user: %s\n", user.UsersSocialNetwork[0].SocialNetworkID)
+				err := i.LiveRepo.UpdateLiveStatusToEnd(live) //Ending the live
+				if err != nil {
+					fmt.Printf("Error trying to ending live: %v\n", err)
+				}
 				return nil
+			}
+
+			//Stating the live
+			err = i.LiveRepo.UpdateLiveStatusToStart(live) //Change the ID
+			if err != nil {
+				fmt.Printf("Error trying to starting live: %v\n", err)
+				continue
 			}
 
 			// Process comments

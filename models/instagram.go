@@ -47,5 +47,6 @@ type InstagramComments struct {
 
 type InstagramMonitorRequest struct {
 	UserID uuid.UUID `json:"user_id"`
+	LiveID uuid.UUID `json:"live_id"`
 	Action string    `json:"action"`
 }
